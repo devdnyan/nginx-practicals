@@ -1,0 +1,20 @@
+services:
+  node:
+    image: node:18
+    container_name: node_server
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./index.html:/app/static.html
+    command: node server.js
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - node
